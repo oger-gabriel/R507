@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Contact;
+use App\Repository\ContactRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -64,6 +65,16 @@ final class MainController extends AbstractController
 
         return $this->render('main/index.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/liste', name: 'list')]
+    public function list(ContactRepository $repository, Request $request): Response
+    {
+        $contacts = $repository->findAll();
+
+        return $this->render('main/list.html.twig', [
+            'contacts' => $contacts,
         ]);
     }
 }
