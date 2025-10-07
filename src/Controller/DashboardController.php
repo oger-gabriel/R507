@@ -10,40 +10,40 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AdminDashboard(
-    routePath: '/admin',
-    routeName: 'admin',
-    routeOptions: [
-        "requirements" => ['domain' => '%app_base_domain%'],
-        "defaults" => ['domain' => '%app_base_domain%'],
-        "host" => '{domain}',
-    ],
-)]
+#[
+    AdminDashboard(
+        routePath: "/admin",
+        routeName: "admin",
+        routeOptions: [
+            "requirements" => ["domain" => "%app_base_domain%"],
+            "defaults" => ["domain" => "%app_base_domain%"],
+            "host" => "{domain}",
+        ],
+    ),
+]
 class DashboardController extends AbstractDashboardController
 {
     public function index(): Response
     {
-        return $this->redirectToRoute('admin_contact_index');
+        return $this->redirectToRoute("admin_contact_index");
     }
 
     public function configureDashboard(): Dashboard
     {
-        return Dashboard::new()
-            ->setTitle('R507');
+        return Dashboard::new()->setTitle("Admin panel");
     }
 
     public function configureActions(): Actions
     {
-        return parent::configureActions()
-            ->add(Crud::PAGE_INDEX, Action::DETAIL);
+        return parent::configureActions()->add(Crud::PAGE_INDEX, Action::DETAIL);
     }
 
     public function configureCrud(): Crud
     {
         return parent::configureCrud()
-            ->setTimezone('Europe/Paris')
+            ->setTimezone("Europe/Paris")
             ->showEntityActionsInlined()
-            ->setDefaultSort(['id' => 'DESC'])
-            ->setEntityPermission('ROLE_ADMIN');
+            ->setDefaultSort(["id" => "DESC"])
+            ->setEntityPermission("ROLE_ADMIN");
     }
 }
