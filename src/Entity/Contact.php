@@ -93,6 +93,8 @@ class Contact
     public function setStatus(string $status): static
     {
         $this->status = $status;
+
+        return $this;
     }
 
     public function getPhone(): ?string

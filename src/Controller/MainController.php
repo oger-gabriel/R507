@@ -58,6 +58,7 @@ final class MainController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $contact->setCreatedAt(new \DateTimeImmutable("now"));
+            $contact->setStatus("new");
 
             $em->persist($contact);
             $em->flush();
@@ -75,21 +76,28 @@ final class MainController extends AbstractController
     {
         $limit = 2;
         $search = $request->query->get("search");
+        $status = $request->query->get("status", "all");
 
+        // Start with base query
         if ($search) {
             $contacts = $repository->search($search);
-            $totalPages = ceil(count($contacts) / $limit);
-            $contacts = array_slice($contacts, ($page - 1) * $limit, $limit);
+        } elseif ($status === "all") {
+            $contacts = $repository->findAll();
         } else {
-            $contacts = $repository->paginate($page, $limit);
-            $totalPages = ceil($repository->count() / $limit);
+            $contacts = $repository->findBy(["status" => $status]);
         }
+
+        // Apply pagination
+        $totalContacts = count($contacts);
+        $totalPages = ceil($totalContacts / $limit);
+        $contacts = array_slice($contacts, ($page - 1) * $limit, $limit);
 
         return $this->render("main/list.html.twig", [
             "contacts" => $contacts,
             "currentPage" => $page,
             "totalPages" => $totalPages,
             "search" => $search,
+            "currentStatus" => $status,
         ]);
     }
 }
