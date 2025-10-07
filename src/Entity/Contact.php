@@ -20,6 +20,9 @@ class Contact
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
+    #[ORM\Column(length: 20)]
+    private ?string $phone = null;
+
     #[ORM\Column(type: Types::TEXT)]
     private ?string $message = null;
 
@@ -90,6 +93,16 @@ class Contact
     public function setStatus(string $status): static
     {
         $this->status = $status;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): static
+    {
+        $this->phone = $phone;
 
         return $this;
     }
