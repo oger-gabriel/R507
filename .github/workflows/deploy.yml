@@ -6,6 +6,9 @@ on:
 
     workflow_dispatch: # in case i want to manually deploy to prod without to push or tag a commit
 
+permissions:
+    contents: read
+
 jobs:
     deploy-to-prod:
         runs-on: ubuntu-latest
