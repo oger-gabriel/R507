@@ -4,6 +4,8 @@ on:
     push:
         branches: ["master"]
 
+    workflow_dispatch: # in case i want to manually deploy to prod without to push or tag a commit
+
 jobs:
     deploy-to-prod:
         runs-on: ubuntu-latest
