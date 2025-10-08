@@ -18,11 +18,13 @@ jobs:
                 image: mariadb:latest
                 env:
                     MARIADB_ROOT_PASSWORD: password
+                    MARIADB_PASSWORD: password
                     MARIADB_DATABASE: app
+                    MARIADB_USER: app
                 ports:
                     - 3306:3306
                 options: >-
-                    --health-cmd="mariadb-admin ping -h localhost -ppassword"
+                    --health-cmd="mariadb-admin ping -h localhost"
                     --health-interval=10s
                     --health-timeout=5s
                     --health-retries=3
