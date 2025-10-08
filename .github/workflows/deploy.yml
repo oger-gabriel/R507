@@ -1,0 +1,33 @@
+name: Deploy to ftp
+
+on:
+    push:
+        branches: ["master"]
+
+    workflow_dispatch: # in case i want to manually deploy to prod without to push or tag a commit
+
+permissions:
+    contents: read
+
+jobs:
+    deploy-to-prod:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "8.4"
+                  extensions: pdo_mysql
+                  coverage: none
+
+            - uses: actions/checkout@v5
+            - name: Install Dependencies
+              run: composer install --no-progress --prefer-dist --no-interaction
+
+            - uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+              with:
+                  server: ${{ secrets.FTP_SERVER }}
+                  username: ${{ secrets.FTP_USER }}
+                  password: ${{ secrets.FTP_PASSWORD }}
+                  exclude: |
+                      var/**
